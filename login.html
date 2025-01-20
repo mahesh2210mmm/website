@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #eeeeee;
+    }
+
+    .logo {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .logo img {
+      width: 90px;
+    }
+
+    .login-box {
+      width: 330px;
+      margin-bottom: 60px;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #b1b1b1;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input[type="text"]:hover, input[type="password"]:hover {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .input-group .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+    }
+    
+    .input-group .toggle-password::before {
+      content: "";
+      position: absolute;
+      top:90%;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      width: 24px;
+      height: 24px;
+      background-image: url('eye.png');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .input-group .toggle-password.closed::before {
+      background-image: url('eye.png');
+    }
+
+    .input-group .toggle-password.closed::after {
+      content: "";
+      position: absolute;
+      top: 90%;
+      left: 4px;
+      right: 4px;
+      height: 4px;
+      background-color: rgb(35, 67, 134);
+      transform: rotate(-45deg);
+    }
+
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .options input[type="checkbox"] {
+      margin-right: 5px;
+      accent-color: #1b2f46;
+    }
+
+    button {
+      padding: 12px 18px;
+      background-color: #386ea8;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .lost-password {
+      margin-top: 0px;
+     padding-right: 12%;
+    }
+
+    .lost-password a {
+      color: #696969;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .lost-password a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo Section -->
+  <div class="logo">
+    <img src="logo.png" alt="Company Logo">
+  </div>
+
+  <!-- Login Box -->
+  <div class="login-box">
+    <form action="savelogin.php" method="POST">
+      <div class="input-group">
+        <label for="username">Username or Email Address</label>
+        <input type="text" name="username" id="username" placeholder="">
+      </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="">
+        <span class="toggle-password open" onclick="togglePassword()"></span>
+      </div>
+      <div class="options">
+        <label>
+          <input type="checkbox" id="remember-me"> Remember Me
+        </label>
+        <button type="button" onclick="login()">Log In</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Lost Password Section -->
+  <div class="lost-password">
+    <a href="#">Lost your password?</a>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById("password");
+      const toggleIcon = document.querySelector(".toggle-password");
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.classList.add("closed");
+      } else {
+        passwordInput.type = "password";
+        toggleIcon.classList.remove("closed");
+      }
+    }
+
+    function login() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const rememberMe = document.getElementById("remember-me").checked;
+      alert(`Username: ${username}\nPassword: ${password}\nRemember Me: ${rememberMe}`);
+    }
+  </script>
+</body>
+</html>
