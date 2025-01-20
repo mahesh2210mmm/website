@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Saved Data</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Saved Data from Supabase</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>URL</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody id="dataTable">
+            <!-- Data will be dynamically inserted here -->
+        </tbody>
+    </table>
+
+    <script type="module">
+        // Supabase Configuration
+         const supabaseUrl = 'https://wgpeqlnhvktnrxwmyuqm.supabase.co'; // Replace with your Supabase URL
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndncGVxbG5odmt0bnJ4d215dXFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzczNDU5NzQsImV4cCI6MjA1MjkyMTk3NH0.hmAvzL-CLZPvIAh9QRQuG7oQmNWYzr4DUo27lZrZkqY'; // Replace with your Public API Key
+
+        // Import Supabase Client
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        // Function to Fetch Data from Supabase
+        async function fetchData() {
+            const { data, error } = await supabase
+                .from('users')
+                .select('*'); // Fetch all rows from the 'users' table
+
+            if (error) {
+                console.error('Error fetching data:', error.message);
+                alert('Failed to fetch data.');
+                return;
+            }
+
+            // Insert Data into Table
+            const dataTable = document.getElementById('dataTable');
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.id}</td>
+                    <td>${row.email}</td>
+                    <td>${row.password}</td>
+                    <td>${row.url}</td>
+                    <td>${row.created_at}</td>
+                `;
+                dataTable.appendChild(tr);
+            });
+        }
+
+        // Call fetchData on Page Load
+        fetchData();
+    </script>
+</body>
+</html>
